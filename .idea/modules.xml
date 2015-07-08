@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LaunchPad.iml" filepath="$PROJECT_DIR$/LaunchPad.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nd801.iml" filepath="$PROJECT_DIR$/nd801.iml" />
     </modules>
   </component>
 </project>

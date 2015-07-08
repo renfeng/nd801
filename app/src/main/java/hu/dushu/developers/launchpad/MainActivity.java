@@ -1,5 +1,6 @@
 package hu.dushu.developers.launchpad;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,11 +39,16 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user touches the button */
+    /**
+     * Called when the user touches the button
+     */
     public void sendMessage(View view) {
         // Do something in response to button click
-        Toast toast = new Toast(this);
-        toast.setText("This button will launch my capstone app!");
+        Context context = getApplicationContext();
+        CharSequence text = "This button will launch my capstone app!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 }
