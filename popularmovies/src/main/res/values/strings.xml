@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- https://www.themoviedb.org/talk/55a097e9c3a3681cec000899 -->
+    <string name="api_key">fb8fd4a1c8bdc1edbdd889f0b72eec9a</string>
+
+    <!-- Account type (for sync-adapter authenticator) -->
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">popularmovies.developers.dushu.hu</string>
+    <string name="content_authority">hu.dushu.developers.popularmovies</string>
+
+</resources>
