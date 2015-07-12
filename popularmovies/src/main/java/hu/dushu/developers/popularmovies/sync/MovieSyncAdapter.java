@@ -11,6 +11,7 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.api.client.http.GenericUrl;
@@ -55,12 +56,17 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
+        Context context = getContext();
+
         /*
          * use google http client with url connection transport, and jackson json factory
          */
+        String sortPrefKey = context.getString(R.string.pref_sort_key);
+        String sort = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(sortPrefKey, "popularity.desc");
         GenericUrl url = new GenericUrl("http://api.themoviedb.org/3/discover/movie" +
-                "?sort_by=popularity.desc" +
-                "&api_key=" + getContext().getString(R.string.api_key));
+                "?sort_by=" + sort +
+                "&api_key=" + context.getString(R.string.api_key));
 
         HttpTransport transport = new NetHttpTransport();
         HttpRequestFactory factory = transport.createRequestFactory(new HttpRequestInitializer() {
@@ -69,13 +75,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 request.setParser(new JsonObjectParser(new JacksonFactory()));
             }
         });
-//        HttpRequestFactory factory = transport.createRequestFactory(new HttpRequestInitializer() {
-//            @Override
-//            public void initialize(HttpRequest request) throws IOException {
-//                request.setParser(new JsonObjectParser.Builder(new JacksonFactory())
-//                        .setWrapperKeys(Arrays.asList("results")).build());
-//            }
-//        });
 
         try {
             HttpRequest request = factory.buildGetRequest(url);
@@ -88,57 +87,16 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 values.put(MovieContract.MovieEntity.POSTER_COLUMN, r.getPosterPath());
                 values.put(MovieContract.MovieEntity.TITLE_COLUMN, r.getTitle());
                 values.put(MovieContract.MovieEntity.POPULARITY_COLUMN, r.getPopularity());
+                values.put(MovieContract.MovieEntity.RATE_COLUMN, r.getVoteAverage());
                 values.put(MovieContract.MovieEntity.RELEASE_COLUMN, r.getReleaseDate());
+                values.put(MovieContract.MovieEntity.PLOT_COLUMN, r.getOverview());
                 values.put(MovieContract.MovieEntity.ID_COLUMN, r.getId());
                 list.add(values);
             }
 
-            getContext().getContentResolver().bulkInsert(
-                    MovieContract.MovieEntity.getContentUri(getContext()),
+            context.getContentResolver().bulkInsert(
+                    MovieContract.MovieEntity.getContentUri(context),
                     list.toArray(new ContentValues[list.size()]));
-
-//            Uri uri = Uri.parse("http://api.themoviedb.org/3/discover/movie");
-//            Uri.Builder ub = uri.buildUpon();
-//            ub.appendQueryParameter("sort_by", "popularity.desc");
-//            ub.appendQueryParameter("api_key", getContext().getString(R.string.api_key));
-//            URL url = new URL(ub.build().toString());
-//
-//            // Create the request to OpenWeatherMap, and open the connection
-//            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//            urlConnection.setRequestMethod("GET");
-//            urlConnection.connect();
-//            try {
-//                // Read the input stream into a String
-//                InputStream inputStream = urlConnection.getInputStream();
-//                StringBuffer buffer = new StringBuffer();
-//                if (inputStream != null) {
-//                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-//                    try {
-//                        String line;
-//                        while ((line = reader.readLine()) != null) {
-//                            // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-//                            // But it does make debugging a *lot* easier if you print out the completed
-//                            // buffer for debugging.
-//                            buffer.append(line + "\n");
-//                        }
-//
-//                        if (buffer.length() > 0) {
-//                            String jsonStr = buffer.toString();
-//                            Log.d(LOG_TAG, jsonStr);
-//
-//                            try {
-//                                getMovieDataFromJson(jsonStr);
-//                            } catch (JSONException e) {
-//                                Log.e(LOG_TAG, e.getMessage(), e);
-//                            }
-//                        }
-//                    } finally {
-//                        reader.close();
-//                    }
-//                }
-//            } finally {
-//                urlConnection.disconnect();
-//            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
@@ -146,6 +104,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * TODO remove old movies
          */
+
+
     }
 
 
@@ -221,7 +181,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Create the account type and default account
         Account newAccount = new Account(
-                context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
+                context.getString(R.string.app_name),
+                context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
         if (null == accountManager.getPassword(newAccount)) {

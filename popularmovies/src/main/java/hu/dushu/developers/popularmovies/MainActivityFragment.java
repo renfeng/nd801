@@ -23,9 +23,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private static final int MOVIE_LOADER = 0;
 
     private static final String[] MOVIE_COLUMNS = {
-            MovieContract.MovieEntity._ID,
+            MovieContract.MovieEntity.ID_COLUMN,
             MovieContract.MovieEntity.POSTER_COLUMN,
             MovieContract.MovieEntity.TITLE_COLUMN,
+            /*
+             * TODO comment out the following two columns if they are not used
+             */
+            MovieContract.MovieEntity.POPULARITY_COLUMN,
+            MovieContract.MovieEntity.RATE_COLUMN,
+
+            MovieContract.MovieEntity._ID
     };
 
     // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
@@ -33,6 +40,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final int ID_COLUMN = 0;
     public static final int POSTER_COLUMN = 1;
     public static final int TITLE_COLUMN = 2;
+    public static final int POPULARITY_COLUMN = 3;
+    public static final int RATE_COLUMN = 4;
 
     private static final String POSITION_KEY = "position";
 
@@ -60,12 +69,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 /*
                  * must move cursor for two-panel layout
                  */
-//                Cursor cursor = getAdapter().getCursor();
-//                if (cursor != null && cursor.moveToPosition(position)) {
-//                    String word = cursor.getString(WORD_COLUMN);
-//                    Callback callback = (Callback) getActivity();
-//                    callback.onWordSelected(word);
-//                }
+                Cursor cursor = getAdapter().getCursor();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    int movieId = cursor.getInt(ID_COLUMN);
+                    Callback callback = (Callback) getActivity();
+                    callback.onMovieSelected(movieId);
+                }
 
                 setPosition(position);
             }
@@ -94,17 +103,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         switch (id) {
             case MOVIE_LOADER: {
 
-                String sortOrder = MovieContract.MovieEntity.POPULARITY_COLUMN + " DESC, " +
-                        MovieContract.MovieEntity._ID + " DESC";
-
                 return new CursorLoader(
                         getActivity(),
-                        Uri.parse("content://" + getActivity().getString(R.string.content_authority))
+                        Uri.parse("content://" + getString(R.string.content_authority))
                                 .buildUpon().appendPath(MovieContract.MOVIE_PATH).build(),
                         MOVIE_COLUMNS,
                         null,
                         null,
-                        sortOrder);
+                        null);
             }
         }
 
@@ -148,5 +154,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void onMovieSelected(int movieId);
     }
 }

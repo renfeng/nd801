@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TODO set to true to enable two pane layout -->
+    <bool name="two_pane_layout">true</bool>
+</resources>

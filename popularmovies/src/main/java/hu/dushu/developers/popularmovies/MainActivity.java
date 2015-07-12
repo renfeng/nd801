@@ -1,21 +1,31 @@
 package hu.dushu.developers.popularmovies;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import hu.dushu.developers.popularmovies.sync.MovieSyncAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActionBarActivity implements MainActivityFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+
+            Intent intent = getIntent();
+            int movieId = intent.getIntExtra(Intent.EXTRA_TEXT, -1);
+            if (movieId != -1) {
+                onMovieSelected(movieId);
+            }
+        }
+
         MovieSyncAdapter.initializeSyncAdapter(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,9 +43,29 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMovieSelected(int movieId) {
+        if (getResources().getBoolean(R.bool.two_pane_layout)) {
+            DetailsActivityFragment detailFragment = new DetailsActivityFragment();
+
+            Bundle args = new Bundle();
+            args.putInt(DetailsActivity.MOVIE_KEY, movieId);
+            detailFragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.details_container, detailFragment)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.putExtra(DetailsActivity.MOVIE_KEY, movieId);
+            startActivity(intent);
+        }
     }
 }

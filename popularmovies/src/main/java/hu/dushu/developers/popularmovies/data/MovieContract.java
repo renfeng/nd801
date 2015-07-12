@@ -29,8 +29,10 @@ public class MovieContract {
         public static final String POSTER_COLUMN = "poster_path";
         public static final String TITLE_COLUMN = "title";
         public static final String POPULARITY_COLUMN = "popularity";
+        public static final String RATE_COLUMN = "vote_average";
         public static final String RELEASE_COLUMN = "release_date";
         public static final String ID_COLUMN = "id";
+        public static final String PLOT_COLUMN = "overview";
 
         public static Uri getContentUri(Context context) {
             return Uri.parse("content://" + context.getString(R.string.content_authority))

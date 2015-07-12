@@ -8,6 +8,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import hu.dushu.developers.popularmovies.R;
 
@@ -15,6 +17,8 @@ import hu.dushu.developers.popularmovies.R;
  * Created by renfeng on 7/11/15.
  */
 public class MovieProvider extends ContentProvider {
+
+    private static final String LOG_TAG = MovieProvider.class.getSimpleName();
 
     private MovieDBHelper helper;
 
@@ -50,6 +54,19 @@ public class MovieProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
+        if (sortOrder == null) {
+            Context context = getContext();
+            String sortPrefKey = context.getString(R.string.pref_sort_key);
+            String sort = PreferenceManager.getDefaultSharedPreferences(context).getString(sortPrefKey, "popularity.desc");
+            if ("popularity.desc".equals(sort)) {
+                sortOrder = MovieContract.MovieEntity.POPULARITY_COLUMN + " DESC, " +
+                        MovieContract.MovieEntity._ID + " DESC";
+            } else if ("vote_average.desc".equals(sort)) {
+                sortOrder = MovieContract.MovieEntity.RATE_COLUMN + " DESC, " +
+                        MovieContract.MovieEntity._ID + " DESC";
+            }
+        }
+
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
@@ -57,10 +74,11 @@ public class MovieProvider extends ContentProvider {
             // "movie/#"
             case MOVIE_ID: {
                 long id = ContentUris.parseId(uri);
+
                 retCursor = helper.getReadableDatabase().query(
                         MovieContract.MovieEntity.TABLE_NAME,
                         projection,
-                        MovieContract.MovieEntity._ID + " = ?",
+                        MovieContract.MovieEntity.ID_COLUMN + " = ?",
                         new String[]{id + ""},
                         null,
                         null,
@@ -188,6 +206,34 @@ public class MovieProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsUpdated;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        final SQLiteDatabase db = getHelper().getWritableDatabase();
+        final int match = getUriMatcher().match(uri);
+        switch (match) {
+            case MOVIE:
+                db.beginTransaction();
+                int returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(MovieContract.MovieEntity.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                Log.d(LOG_TAG, "number of weather records inserted: " + returnCount);
+                return returnCount;
+            default: {
+                return super.bulkInsert(uri, values);
+            }
+        }
     }
 
     public MovieDBHelper getHelper() {
