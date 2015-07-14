@@ -17,4 +17,6 @@
     <string name="pref_sort_title">Sort</string>
     <string name="title_activity_details">DetailsActivity</string>
 
+    <string name="grid_column_width" translatable="false">2</string>
+
 </resources>

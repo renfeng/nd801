@@ -14,7 +14,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     /*
      * If you change the database schema, you must increment the database version.
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     public MovieDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,6 +29,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 //                MovieContract.MovieEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MovieContract.MovieEntity._ID + " INTEGER PRIMARY KEY, " +
                 MovieContract.MovieEntity.ID_COLUMN + " INTEGER UNIQUE NOT NULL, " +
+                MovieContract.MovieEntity.BACKDROP_COLUMN + " TEXT NOT NULL, " +
                 MovieContract.MovieEntity.POSTER_COLUMN + " TEXT NOT NULL, " +
                 MovieContract.MovieEntity.TITLE_COLUMN + " TEXT NOT NULL, " +
                 MovieContract.MovieEntity.POPULARITY_COLUMN + " REAL NOT NULL, " +

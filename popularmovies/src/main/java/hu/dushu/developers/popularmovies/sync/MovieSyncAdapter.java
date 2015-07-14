@@ -84,6 +84,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             ArrayList<ContentValues> list = new ArrayList<>();
             for (Result r : movie.getResults()) {
                 ContentValues values = new ContentValues();
+                values.put(MovieContract.MovieEntity.BACKDROP_COLUMN, r.getBackdropPath());
                 values.put(MovieContract.MovieEntity.POSTER_COLUMN, r.getPosterPath());
                 values.put(MovieContract.MovieEntity.TITLE_COLUMN, r.getTitle());
                 values.put(MovieContract.MovieEntity.POPULARITY_COLUMN, r.getPopularity());

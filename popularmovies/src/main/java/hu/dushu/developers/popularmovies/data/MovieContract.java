@@ -26,6 +26,7 @@ public class MovieContract {
 
         public static final String TABLE_NAME = "movie";
 
+        public static final String BACKDROP_COLUMN = "backdrop_path";
         public static final String POSTER_COLUMN = "poster_path";
         public static final String TITLE_COLUMN = "title";
         public static final String POPULARITY_COLUMN = "popularity";

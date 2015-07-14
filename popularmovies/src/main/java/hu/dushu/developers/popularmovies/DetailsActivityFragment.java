@@ -33,6 +33,7 @@ public class DetailsActivityFragment extends Fragment
 
     private static final String[] MOVIE_COLUMNS = {
             MovieContract.MovieEntity.ID_COLUMN,
+            MovieContract.MovieEntity.BACKDROP_COLUMN,
             MovieContract.MovieEntity.POSTER_COLUMN,
             MovieContract.MovieEntity.TITLE_COLUMN,
             MovieContract.MovieEntity.RELEASE_COLUMN,
@@ -45,14 +46,16 @@ public class DetailsActivityFragment extends Fragment
     // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
     // must change.
     public static final int ID_COLUMN = 0;
-    public static final int POSTER_COLUMN = 1;
-    public static final int TITLE_COLUMN = 2;
-    public static final int RELEASE_COLUMN = 3;
-    public static final int RATE_COLUMN = 4;
-    public static final int PLOT_COLUMN = 5;
+    public static final int BACKDROP_COLUMN = 1;
+    public static final int POSTER_COLUMN = 2;
+    public static final int TITLE_COLUMN = 3;
+    public static final int RELEASE_COLUMN = 4;
+    public static final int RATE_COLUMN = 5;
+    public static final int PLOT_COLUMN = 6;
 
     private int movieId;
 
+    private ImageView backdropImageView;
     private ImageView posterImageView;
     private TextView titleTextView;
     private TextView releaseDateTextView;
@@ -72,6 +75,7 @@ public class DetailsActivityFragment extends Fragment
 
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
+        setBackdropImageView((ImageView) view.findViewById(R.id.backdropImageView));
         setPosterImageView((ImageView) view.findViewById(R.id.posterImageView));
         setTitleTextView((TextView) view.findViewById(R.id.titleTextView));
         setReleaseDateTextView((TextView) view.findViewById(R.id.releaseDateTextView));
@@ -113,6 +117,8 @@ public class DetailsActivityFragment extends Fragment
 
         if (cursor != null && cursor.moveToFirst()) {
 
+            String backdrop = cursor.getString(
+                    cursor.getColumnIndex(MovieContract.MovieEntity.BACKDROP_COLUMN));
             String poster = cursor.getString(
                     cursor.getColumnIndex(MovieContract.MovieEntity.POSTER_COLUMN));
             String title = cursor.getString(
@@ -128,6 +134,8 @@ public class DetailsActivityFragment extends Fragment
                 plot = "(plot unavailable)";
             }
 
+            Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/" + "w185" + backdrop)
+                    .into(getBackdropImageView());
             Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/" + "w185" + poster)
                     .into(getPosterImageView());
             getTitleTextView().setText(title);
@@ -222,5 +230,13 @@ public class DetailsActivityFragment extends Fragment
 
     public void setPosterImageView(ImageView posterImageView) {
         this.posterImageView = posterImageView;
+    }
+
+    public ImageView getBackdropImageView() {
+        return backdropImageView;
+    }
+
+    public void setBackdropImageView(ImageView backdropImageView) {
+        this.backdropImageView = backdropImageView;
     }
 }
