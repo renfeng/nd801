@@ -10,46 +10,156 @@ import java.util.List;
 public class Movie {
 
     @Key
-    private int page;
+    private boolean adult;
+
+    @Key("backdrop_path")
+    private String backdropPath;
+
+    @Key("genre_ids")
+    private List<Integer> genreIDs;
 
     @Key
-    private List<Result> results;
+    private int id;
 
-    @Key("total_pages")
-    private int totalPages;
+    @Key("original_language")
+    private String originalLanguage;
 
-    @Key("total_results")
-    private int totalResults;
+    @Key("original_title")
+    private String originalTitle;
 
-    public int getPage() {
-        return page;
+    @Key
+    private String overview;
+
+    @Key("release_date")
+    private String releaseDate;
+
+    @Key("poster_path")
+    private String posterPath;
+
+    @Key
+    private float popularity;
+
+    @Key
+    private String title;
+
+    @Key
+    private boolean video;
+
+    @Key("vote_average")
+    private float voteAverage;
+
+    @Key("vote_count")
+    private int voteCount;
+
+    public boolean isAdult() {
+        return adult;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setAdult(boolean adult) {
+        this.adult = adult;
     }
 
-    public List<Result> getResults() {
-        return results;
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
-    public void setResults(List<Result> results) {
-        this.results = results;
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
     }
 
-    public int getTotalPages() {
-        return totalPages;
+    public List<Integer> getGenreIDs() {
+        return genreIDs;
     }
 
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+    public void setGenreIDs(List<Integer> genreIDs) {
+        this.genreIDs = genreIDs;
     }
 
-    public int getTotalResults() {
-        return totalResults;
+    public int getId() {
+        return id;
     }
 
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public float getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(float popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public float getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(float voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 }

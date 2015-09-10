@@ -18,5 +18,7 @@
     <string name="title_activity_details">DetailsActivity</string>
 
     <string name="grid_column_width" translatable="false">2</string>
+    <string name="trailers_label">Trailers</string>
+    <string name="reviews_label">Reviews</string>
 
 </resources>
