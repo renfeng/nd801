@@ -98,8 +98,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 			values.put(MovieContract.MovieEntity.RELEASE_COLUMN, r.getReleaseDate());
 			values.put(MovieContract.MovieEntity.PLOT_COLUMN, r.getOverview());
 			values.put(MovieContract.MovieEntity.ID_COLUMN, r.getId());
-			values.put(MovieContract.MovieEntity.REVIEWS_COLUMN, loadReviews(r.getId()));
-			values.put(MovieContract.MovieEntity.TRAILERS_COLUMN, loadTrailers(r.getId()));
+
+			String reviews = loadReviews(r.getId());
+			values.put(MovieContract.MovieEntity.REVIEWS_COLUMN, reviews);
+
+			String trailers = loadTrailers(r.getId());
+			values.put(MovieContract.MovieEntity.TRAILERS_COLUMN, trailers);
+
 			list.add(values);
 		}
 

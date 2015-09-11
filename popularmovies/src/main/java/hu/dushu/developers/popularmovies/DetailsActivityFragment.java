@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.dushu.developers.popularmovies.data.MovieContract;
+import hu.dushu.developers.popularmovies.sync.Review;
+import hu.dushu.developers.popularmovies.sync.ReviewsResponse;
 import hu.dushu.developers.popularmovies.sync.Video;
 import hu.dushu.developers.popularmovies.sync.VideosResponse;
 
@@ -163,7 +165,7 @@ public class DetailsActivityFragment extends Fragment
 			getVoteAverageTextView().setText(voteAverage);
 
 			if (trailers != null) {
-				List<String> trailerNames = new ArrayList<>();
+				List<String> trailerList = new ArrayList<>();
 				final List<String> youtubeKeys = new ArrayList<>();
 
 				JsonObjectParser parser = new JsonObjectParser(new JacksonFactory());
@@ -174,7 +176,7 @@ public class DetailsActivityFragment extends Fragment
 						if (!"YouTube".equals(v.getSite())) {
 							continue;
 						}
-						trailerNames.add(v.getName());
+						trailerList.add(v.getName());
 						youtubeKeys.add(v.getKey());
 					}
 				} catch (IOException e) {
@@ -183,7 +185,7 @@ public class DetailsActivityFragment extends Fragment
 
 				ListView trailersListView = getTrailersListView();
 				trailersListView.setAdapter(new ArrayAdapter<>(getActivity(),
-						R.layout.trailer_list, R.id.trailer_text_view, trailerNames));
+						R.layout.simple_list, R.id.text_view, trailerList));
 				trailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
 					public void onItemClick(
@@ -194,24 +196,24 @@ public class DetailsActivityFragment extends Fragment
 					}
 				});
 			}
-//			if (reviews != null) {
-//				List<String> reviewNames = new ArrayList<>();
-//
-//				JsonObjectParser parser = new JsonObjectParser(new JacksonFactory());
-//				try {
-//					VideosResponse response = parser.parseAndClose(
-//							new StringReader(trailers), VideosResponse.class);
-//					for (Video v : response.getResults()) {
-//						reviewNames.add(v.getName());
-//					}
-//				} catch (IOException e) {
-//					Log.e(LOG_TAG, "Error ", e);
-//				}
-//
-//				ListView trailersListView = getTrailersListView();
-//				trailersListView.setAdapter(new ArrayAdapter<>(
-//						getActivity(), R.layout.trailer_list, R.id.trailer_text_view, reviewNames));
-//			}
+			if (reviews != null) {
+				List<String> reviewList = new ArrayList<>();
+
+				JsonObjectParser parser = new JsonObjectParser(new JacksonFactory());
+				try {
+					ReviewsResponse response = parser.parseAndClose(
+							new StringReader(reviews), ReviewsResponse.class);
+					for (Review r : response.getResults()) {
+						reviewList.add(r.getContent() + " - " + r.getAuthor());
+					}
+				} catch (IOException e) {
+					Log.e(LOG_TAG, "Error ", e);
+				}
+
+				ListView reviewsListView = getReviewssListView();
+				reviewsListView.setAdapter(new ArrayAdapter<>(
+						getActivity(), R.layout.simple_list, R.id.text_view, reviewList));
+			}
 
 			if (plot.length() == 0) {
 				plot = "(plot unavailable)";

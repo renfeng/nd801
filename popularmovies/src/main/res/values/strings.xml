@@ -20,5 +20,9 @@
     <string name="grid_column_width" translatable="false">2</string>
     <string name="trailers_label">Trailers</string>
     <string name="reviews_label">Reviews</string>
+    <string name="favorite_button_label">Favorite</string>
+    <string name="movie_poster_image_content_description">Movie poster</string>
+    <string name="movie_backdrop_image_content_description">Movie backdrop</string>
+    <string name="movie_grid_image_content_description">Movie poster</string>
 
 </resources>

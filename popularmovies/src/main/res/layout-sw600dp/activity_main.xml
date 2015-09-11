@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    tools:context="hu.dushu.developers.popularmovies.MainActivity">
+    tools:context="hu.dushu.developers.popularmovies.MainActivity"
+              android:baselineAligned="false">
 
     <fragment
         android:id="@+id/fragment"
