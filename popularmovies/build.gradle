@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "hu.dushu.developers.popularmovies"
@@ -30,10 +30,10 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     /*
-         * 23.+ doesn't work - no download/install for sdk manager
-         */
+     * 23.+ doesn't work - no download/install for sdk manager
+     */
     //    compile 'com.android.support:appcompat-v7:23.+'
-    compile 'com.android.support:appcompat-v7:20.+'
+    compile 'com.android.support:appcompat-v7:23.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
     //    compile 'com.google.http-client:google-http-client:1.20.0'
     compile 'com.google.http-client:google-http-client-jackson2:1.20.0'
