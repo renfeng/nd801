@@ -80,7 +80,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 			return;
 		}
 
-			GenericUrl url = new GenericUrl("http://api.themoviedb.org/3/discover/movie" +
+		GenericUrl url = new GenericUrl("http://api.themoviedb.org/3/discover/movie" +
 				"?sort_by=" + sort +
 				"&api_key=" + context.getString(R.string.api_key));
 
@@ -180,7 +180,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 		MovieSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
-         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
+		 * Without calling setSyncAutomatically, our periodic sync will not be enabled.
          */
 		ContentResolver.setSyncAutomatically(
 				newAccount, context.getString(R.string.content_authority), true);

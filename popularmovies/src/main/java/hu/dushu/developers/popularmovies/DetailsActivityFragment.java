@@ -1,6 +1,8 @@
 package hu.dushu.developers.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -26,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import hu.dushu.developers.popularmovies.data.MovieContract;
@@ -81,6 +85,7 @@ public class DetailsActivityFragment extends Fragment
 	private TextView plotTextView;
 	private ListView trailersListView;
 	private ListView reviewssListView;
+	private ToggleButton favoriteToggleButton;
 
 	public DetailsActivityFragment() {
 	}
@@ -103,6 +108,7 @@ public class DetailsActivityFragment extends Fragment
 		setPlotTextView((TextView) view.findViewById(R.id.plotTextView));
 		setTrailersListView((ListView) view.findViewById(R.id.trailersListView));
 		setReviewssListView((ListView) view.findViewById(R.id.reviewsListView));
+		setFavoriteToggleButton((ToggleButton) view.findViewById(R.id.favoriteToggleButton));
 
 		return view;
 	}
@@ -155,6 +161,8 @@ public class DetailsActivityFragment extends Fragment
 					cursor.getColumnIndex(MovieContract.MovieEntity.TRAILERS_COLUMN));
 			String reviews = cursor.getString(
 					cursor.getColumnIndex(MovieContract.MovieEntity.REVIEWS_COLUMN));
+			final String id = cursor.getString(
+					cursor.getColumnIndex(MovieContract.MovieEntity.ID_COLUMN));
 
 			Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/" + "w185" + backdrop)
 					.into(getBackdropImageView());
@@ -220,11 +228,65 @@ public class DetailsActivityFragment extends Fragment
 			}
 			getPlotTextView().setText(plot);
 
+			final ToggleButton favoriteToggleButton = getFavoriteToggleButton();
+
+			final Context context = getContext();
+			final String key = context.getString(R.string.favorites_sort_option);
+			final SharedPreferences settings = context.getSharedPreferences(key, 0);
+			String idListString = settings.getString(key, null);
+			if (contains(idListString, id)) {
+				/*
+				 * TODO test if it's a new instance of toggle button
+				 */
+				favoriteToggleButton.setChecked(true);
+			}
+
+			favoriteToggleButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					/*
+					 * save favorite state of the movie
+					 */
+					SharedPreferences.Editor editor = settings.edit();
+					String idListString = settings.getString(key, null);
+					if (favoriteToggleButton.isChecked()) {
+						editor.putString(key, add(idListString, id));
+					} else {
+						editor.putString(key, remove(idListString, id));
+					}
+					editor.commit();
+				}
+			});
 		} else {
 			String msg = "Movie not found";
 			Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT);
 			toast.show();
 		}
+	}
+
+	static boolean contains(String idListString, String id) {
+		if (idListString != null) {
+			String[] idArray = idListString.split(",");
+			if (Arrays.asList(idArray).contains(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	static String add(String idListString, String id) {
+		if (idListString == null) {
+			return id + "";
+		} else {
+			return id + "," + idListString;
+		}
+	}
+
+	static String remove(String idListString, String id) {
+		if (idListString == null) {
+			return null;
+		}
+		return idListString.replaceFirst("\\b" + id + ",?", "");
 	}
 
 	@Override
@@ -331,5 +393,13 @@ public class DetailsActivityFragment extends Fragment
 
 	public void setTrailersListView(ListView trailersListView) {
 		this.trailersListView = trailersListView;
+	}
+
+	public ToggleButton getFavoriteToggleButton() {
+		return favoriteToggleButton;
+	}
+
+	public void setFavoriteToggleButton(ToggleButton favoriteToggleButton) {
+		this.favoriteToggleButton = favoriteToggleButton;
 	}
 }

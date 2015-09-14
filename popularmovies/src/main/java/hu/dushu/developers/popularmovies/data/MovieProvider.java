@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -68,6 +69,11 @@ public class MovieProvider extends ContentProvider {
 				/*
 				 * TODO query db by a list of id
 				 */
+				String key = context.getString(R.string.favorites_sort_option);
+				SharedPreferences settings = context.getSharedPreferences(key, 0);
+				String idListString = settings.getString(key, null);
+				selection = MovieContract.MovieEntity.ID_COLUMN + " in (" + idListString + ")";
+				selectionArgs = null;
 			}
 		}
 
@@ -179,7 +185,7 @@ public class MovieProvider extends ContentProvider {
 		}
 
         /*
-         * TODO remove selection == null
+		 * TODO remove selection == null
          */
 		// Because a null deletes all rows
 		if (selection == null || rowsDeleted != 0) {
@@ -203,7 +209,7 @@ public class MovieProvider extends ContentProvider {
 		}
 
         /*
-         * TODO remove selection == null
+		 * TODO remove selection == null
          */
 		// Because a null updates all rows
 		if (selection == null || rowsUpdated != 0) {
