@@ -73,7 +73,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 		String sortPrefKey = context.getString(R.string.pref_sort_key);
 		String sort = PreferenceManager.getDefaultSharedPreferences(context)
 				.getString(sortPrefKey, "popularity.desc");
-		GenericUrl url = new GenericUrl("http://api.themoviedb.org/3/discover/movie" +
+		if (context.getString(R.string.favorites_sort_option).equals(sort)) {
+			/*
+			 * TODO query movies by a list of id
+			 */
+			return;
+		}
+
+			GenericUrl url = new GenericUrl("http://api.themoviedb.org/3/discover/movie" +
 				"?sort_by=" + sort +
 				"&api_key=" + context.getString(R.string.api_key));
 

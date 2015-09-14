@@ -1,28 +1,32 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_settings">Settings</string>
+	<string name="app_name">Popular Movies</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="action_settings">Settings</string>
+	<string name="title_activity_settings">Settings</string>
 
-    <!-- https://www.themoviedb.org/talk/55a097e9c3a3681cec000899 -->
-    <string name="api_key" translatable="false">fb8fd4a1c8bdc1edbdd889f0b72eec9a</string>
+	<!-- https://www.themoviedb.org/talk/55a097e9c3a3681cec000899 -->
+	<string name="api_key" translatable="false">fb8fd4a1c8bdc1edbdd889f0b72eec9a</string>
 
-    <!-- Account type (for sync-adapter authenticator) -->
-    <!-- SyncAdapter related -->
-    <string name="sync_account_type" translatable="false">popularmovies.developers.dushu.hu</string>
-    <string name="content_authority" translatable="false">hu.dushu.developers.popularmovies</string>
+	<!-- Account type (for sync-adapter authenticator) -->
+	<!-- SyncAdapter related -->
+	<string name="sync_account_type" translatable="false">popularmovies.developers.dushu.hu</string>
+	<string name="content_authority" translatable="false">hu.dushu.developers.popularmovies</string>
 
-    <string name="pref_sort_default" translatable="false">populartiy.desc</string>
-    <string name="pref_sort_key" translatable="false">sort</string>
-    <string name="pref_sort_title">Sort</string>
-    <string name="title_activity_details">DetailsActivity</string>
+	<string name="pref_sort_default" translatable="false">populartiy.desc</string>
+	<string name="pref_sort_key" translatable="false">sort</string>
+	<string name="pref_sort_title">Sort</string>
+	<string name="title_activity_details">DetailsActivity</string>
 
-    <string name="grid_column_width" translatable="false">2</string>
-    <string name="trailers_label">Trailers</string>
-    <string name="reviews_label">Reviews</string>
-    <string name="favorite_button_label">Favorite</string>
-    <string name="movie_poster_image_content_description">Movie poster</string>
-    <string name="movie_backdrop_image_content_description">Movie backdrop</string>
-    <string name="movie_grid_image_content_description">Movie poster</string>
+	<string name="favorites_sort_option" translatable="false">favorites</string>
+	<string name="popularity_sort_option" translatable="false">popularity.desc</string>
+	<string name="vote_average_sort_option" translatable="false">vote_average.desc</string>
+
+	<string name="grid_column_width" translatable="false">2</string>
+	<string name="trailers_label">Trailers</string>
+	<string name="reviews_label">Reviews</string>
+	<string name="favorite_button_label">Favorite</string>
+	<string name="movie_poster_image_content_description">Movie poster</string>
+	<string name="movie_backdrop_image_content_description">Movie backdrop</string>
+	<string name="movie_grid_image_content_description">Movie poster</string>
 
 </resources>

@@ -4,12 +4,12 @@
     <string-array name="pref_sort_entries">
         <item>Popularity</item>
         <item>Rating</item>
-        <item>Favorite</item>
+        <item>Favorites</item>
     </string-array>
 
     <string-array name="pref_sort_options">
-        <item>popularity.desc</item>
-        <item>vote_average.desc</item>
-        <item>favorite</item>
+        <item>@string/popularity_sort_option</item>
+        <item>@string/vote_average_sort_option</item>
+        <item>@string/favorites_sort_option</item>
     </string-array>
 </resources>
